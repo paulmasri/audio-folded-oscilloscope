@@ -15,6 +15,7 @@ var audioSource = null;
 var audioStream = null;
 var audioAnalyser = null;
 var audioBuffer = null;
+var scopeType = null;
 
 function setupAudio (stream) {
 	audioStream = stream;
@@ -46,7 +47,25 @@ function draw() {
 	// TODO Implemeent visualizer here
   canvas.strokeStyle = "#0088ff";
   canvas.lineWidth = 1;
-  console.log('Drawing stuff');  
+  console.log('Drawing stuff - ' + scopeType);  
+}
+
+function doStandard () {
+	window.cancelAnimationFrame(canvasDrawHandle);
+	scopeType = 'standard';
+	draw();
+}
+
+function doFreeze () {
+	window.cancelAnimationFrame(canvasDrawHandle);
+	scopeType = 'freeze';
+	draw();
+}
+
+function doFolded () {
+	window.cancelAnimationFrame(canvasDrawHandle);
+	scopeType = 'folded';
+	draw();
 }
 
 window.onload = function() {
@@ -54,6 +73,7 @@ window.onload = function() {
   canvas = document.querySelector('.visualizer');
   // TODO Check canvas exists
 	canvasContext = canvas.getContext("2d");
+
 
 	// Set up audio
 	if (navigator.getUserMedia) {
