@@ -15,6 +15,7 @@ var audioSource = null;
 var audioStream = null;
 var audioAnalyser = null;
 var audioBuffer = null;
+var audioBufferLength = 0;
 var scopeType = null;
 
 function setupAudio (stream) {
@@ -32,6 +33,7 @@ function setupAudio (stream) {
 	// audioAnalyser.smoothingTimeConstant = 0.85;
 
 	audioBuffer = new Uint8Array(audioAnalyser.fftSize);
+	audioBufferLength = audioBuffer.length;
 
 	audioSource.connect(audioAnalyser);
 }
@@ -44,10 +46,33 @@ function draw() {
 		return;
 	}
 
-	// TODO Implemeent visualizer here
+	audioAnalyser.getByteTimeDomainData(audioBuffer);
+	console.log(audioBuffer.length);
+
+  console.log('Drawing stuff - ' + scopeType);
+  var y0 = canvas.height / 2;
+  canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.lineWidth = 1;
+
+	switch (scopeType) {
+		case 'standard':
+			canvasContext.strokeStyle = '#6aa';
+			canvasContext.beginPath();
+			canvasContext.moveTo(0, y0);
+
+			for(var i = 0; i < audioBufferLength; i++) {
+				canvasContext.lineTo(i, y0+audioBuffer[i]);
+      }
+
+      canvasContext.stroke();
+			break;
+		case 'freeze':
+			break;
+		case 'folded':
+			break;
+	}
   canvas.strokeStyle = "#0088ff";
-  canvas.lineWidth = 1;
-  console.log('Drawing stuff - ' + scopeType);  
+  canvas.lineWidth = 1;  
 }
 
 function doStandard () {
