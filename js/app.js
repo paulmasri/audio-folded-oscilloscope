@@ -28,9 +28,6 @@ function setupAudio (stream) {
 
 	audioAnalyser = audioContext.createAnalyser();
 	audioAnalyser.fftSize = 2048;
-	// audioAnalyser.minDecibels = -90;
-	// audioAnalyser.maxDecibels = -10;
-	// audioAnalyser.smoothingTimeConstant = 0.85;
 
 	audioBuffer = new Uint8Array(audioAnalyser.fftSize);
 	audioBufferLength = Math.min(audioBuffer.length, canvas.width); // TEMP
@@ -47,10 +44,7 @@ function draw() {
 	}
 
 	audioAnalyser.getByteTimeDomainData(audioBuffer);
-	console.log(audioBuffer.valueOf());
-	// console.log(audioBufferLength);
-
-  // console.log('Drawing stuff - ' + scopeType);
+	
   var x0 = canvas.width / 2;
   var y0 = canvas.height / 2;
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -68,8 +62,7 @@ function draw() {
 
       canvasContext.stroke();
 			break;
-		case 'freeze':
-			break;
+		
 		case 'folded':
 			var offset = 30;
 			canvasContext.strokeStyle = '#399';
@@ -91,12 +84,6 @@ function doStandard () {
 	draw();
 }
 
-function doFreeze () {
-	window.cancelAnimationFrame(canvasDrawHandle);
-	scopeType = 'freeze';
-	draw();
-}
-
 function doFolded () {
 	window.cancelAnimationFrame(canvasDrawHandle);
 	scopeType = 'folded';
@@ -108,7 +95,6 @@ window.onload = function() {
   canvas = document.querySelector('.visualizer');
   canvas.setAttribute('width',600);
   canvas.setAttribute('height',600);
-  console.log(canvas.width+','+canvas.height);
   // TODO Check canvas exists
 	canvasContext = canvas.getContext("2d");
 
