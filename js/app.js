@@ -33,8 +33,8 @@ function setupAudio (stream) {
 	// audioAnalyser.smoothingTimeConstant = 0.85;
 
 	audioBuffer = new Uint8Array(audioAnalyser.fftSize);
-	audioBufferLength = audioBuffer.length;
-
+	audioBufferLength = Math.min(audioBuffer.length, canvas.width); // TEMP
+	
 	audioSource.connect(audioAnalyser);
 }
 
@@ -47,9 +47,10 @@ function draw() {
 	}
 
 	audioAnalyser.getByteTimeDomainData(audioBuffer);
-	console.log(audioBuffer.length);
+	console.log(audioBuffer.valueOf());
+	// console.log(audioBufferLength);
 
-  console.log('Drawing stuff - ' + scopeType);
+  // console.log('Drawing stuff - ' + scopeType);
   var y0 = canvas.height / 2;
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   canvasContext.lineWidth = 1;
@@ -61,7 +62,7 @@ function draw() {
 			canvasContext.moveTo(0, y0);
 
 			for(var i = 0; i < audioBufferLength; i++) {
-				canvasContext.lineTo(i, y0+audioBuffer[i]);
+				canvasContext.lineTo(i, y0-audioBuffer[i]+128);
       }
 
       canvasContext.stroke();
@@ -96,6 +97,9 @@ function doFolded () {
 window.onload = function() {
   // Set up canvas
   canvas = document.querySelector('.visualizer');
+  canvas.setAttribute('width',600);
+  canvas.setAttribute('height',600);
+  console.log(canvas.width+','+canvas.height);
   // TODO Check canvas exists
 	canvasContext = canvas.getContext("2d");
 
