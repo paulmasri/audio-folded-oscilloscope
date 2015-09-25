@@ -51,13 +51,14 @@ function draw() {
 	// console.log(audioBufferLength);
 
   // console.log('Drawing stuff - ' + scopeType);
+  var x0 = canvas.width / 2;
   var y0 = canvas.height / 2;
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   canvasContext.lineWidth = 1;
 
 	switch (scopeType) {
 		case 'standard':
-			canvasContext.strokeStyle = '#6aa';
+			canvasContext.strokeStyle = '#399';
 			canvasContext.beginPath();
 			canvasContext.moveTo(0, y0);
 
@@ -70,10 +71,18 @@ function draw() {
 		case 'freeze':
 			break;
 		case 'folded':
+			var offset = 30;
+			canvasContext.strokeStyle = '#399';
+			canvasContext.beginPath();
+			canvasContext.moveTo(x0 + audioBuffer[0] - 128, y0 - audioBuffer[offset] + 128);
+
+			for(var i = 1; i < audioBufferLength-offset; i++) {
+				canvasContext.lineTo(x0 + audioBuffer[i] - 128, y0 - audioBuffer[i+offset] + 128);
+      }
+
+      canvasContext.stroke();
 			break;
-	}
-  canvas.strokeStyle = "#0088ff";
-  canvas.lineWidth = 1;  
+	} 
 }
 
 function doStandard () {
