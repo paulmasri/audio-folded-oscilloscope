@@ -9,13 +9,20 @@
       body { margin: 1em; font-family: 'Montserrat', sans-serif; }
       h1 { margin: 1em 0; font-size: 18px; }
       p { margin: 1em 0; font-size: 12px; }
-      .visualizer { width: 600px; height: 600px; }
+      ul.buttons { margin: 1em 0; padding: 0; }
+      ul.buttons li { display: inline; margin: 0 1em 0 0; }
+      .buttons a.button { padding: 0.5em; background: #006090; color: #fff; font-size: 12px; text-decoration: none; }
+      canvas.visualizer { width: 600px; height: 600px; }
      </style>
     <script src="js/app.js"></script>
   </head>
   <body>
   <h1>Audio-folded Oscilloscope</h1>
-  <p>Using the Web Audio API for live audio input, this plots the waveform on the HTML canvas with the audio value on the x-axis and a time-shifted version on the y-axis. <a href="https://github.com/paulmasri/audio-folded-oscilliscope" target="_blank">See code</a></p>
+  <p>Using the Web Audio API for live audio input, the folded-audio oscilloscope plots the waveform on the HTML canvas with the audio value on the x-axis and a time-shifted version on the y-axis. <a href="https://github.com/paulmasri/audio-folded-oscilliscope" target="_blank">See code</a></p>
+  <ul class="buttons">
+    <li><a class="button" onclick="doStandard()" href="#">Standard</a></li>
+    <li><a class="button" onclick="doFolded()" href="#">Folded</a></li>
+  </ul>
   <canvas class="visualizer"></canvas>
   </body>
 </html>
